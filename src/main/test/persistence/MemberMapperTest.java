@@ -39,6 +39,10 @@ MemberMapper memberMapper;
     @org.junit.jupiter.api.Test
     void deleteMember() {
         //Need a fake database to test this.
+        boolean isMemberRemoved = memberMapper.deleteMember(55);
+        boolean expected = true;
+        boolean acutal = isMemberRemoved;
+        assertEquals(expected,acutal); //virkede kun 1 gang, da test åbenbart executer SQL statements lol
     }
 
     @org.junit.jupiter.api.Test
