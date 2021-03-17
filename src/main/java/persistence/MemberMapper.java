@@ -160,19 +160,16 @@ public class MemberMapper {
         }
         public List<String>  partiEachTeam(){
             List<String> participants = new ArrayList();
-            String hash = "";
-            String empty = "";
+            String finalString = "";
             String sql = "select team_id, count(member_id) AS antal FROM maxijoin group by team_id;";
             try (Connection connection = database.connect()) {
                 try (PreparedStatement ps = connection.prepareStatement(sql)) {
                     ResultSet rs = ps.executeQuery();
                     while (rs.next()) {
-                        hash = rs.getString("antal");
-                        String no = "";
-                        no = rs.getString("team_id");
-                       empty = no + " has " + hash + " participants";
-                      participants.add(empty);
-
+                        String antal = rs.getString("antal");
+                        String teamId = rs.getString("team_id");
+                        finalString = teamId + " has " + antal + " participants";
+                        participants.add(finalString);
 
                     }
                 } catch (SQLException throwables) {
@@ -184,20 +181,19 @@ public class MemberMapper {
             }
             return participants;
         }
+
     public List<String> partiEachSport(){
         List<String> participants = new ArrayList();
-        String hash = "";
-        String empty = "";
+        String finalString = "";
         String sql = "select sport_id, sport, count(member_id) AS antal FROM maxijoin group by sport_id;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    hash = rs.getString("antal");
-                    String no = "";
-                    no = rs.getString("sport");
-                    empty = no + " has " + hash + " participants";
-                    participants.add(empty);
+                    String antal = rs.getString("antal");
+                    String sport = rs.getString("sport");
+                    finalString = sport + " has " + antal + " participants";
+                    participants.add(finalString);
 
 
                 }
@@ -212,21 +208,18 @@ public class MemberMapper {
     }
     public List<String> amountByGender(){
         List<String> participants = new ArrayList();
-        String hash = "";
-        String empty = "";
+        String finalString = "";
         String sql = "select gender, count(member_id) AS antal FROM maxijoin group by gender;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    hash = rs.getString("antal");
-                    String no = "";
-                    no = rs.getString("gender");
-                    empty = no + " has " + hash + " participants";
-                    participants.add(empty);
-
-
+                    String antal = rs.getString("antal");
+                    String gender = rs.getString("gender");
+                    finalString = gender + " has " + antal + " participants";
+                    participants.add(finalString);
                 }
+
             } catch (SQLException throwables) {
                 // TODO: Make own throwable exception and let it bubble upwards
                 throwables.printStackTrace();
@@ -237,13 +230,13 @@ public class MemberMapper {
         return participants;
     }
     public int totalIncome(){
-        int hash = 0;
+        int income = 0;
         String sql = "select sum(price) as income from maxijoin;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    hash = rs.getInt("income");
+                    income = rs.getInt("income");
                 }
             } catch (SQLException throwables) {
                 // TODO: Make own throwable exception and let it bubble upwards
@@ -252,22 +245,20 @@ public class MemberMapper {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return hash;
+        return income;
     }
     public List<String> totalIncomeForEachTeam(){
-            List<String> nisseFisse = new ArrayList<>();
-        int hash = 0;
-        String empty = "";
+            List<String> totalIncomeList = new ArrayList<>();
         String sql = "select sport, team_id, sum(price) as income from maxijoin group by team_id;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    String fisseNisse = "";
-                    empty = rs.getString("team_id");
-                    hash = rs.getInt("income");
-                    fisseNisse = empty +  ": " + hash;
-                    nisseFisse.add(fisseNisse);
+                    String finalString = "";
+                    String teamId = rs.getString("team_id");
+                   int income = rs.getInt("income");
+                    finalString = teamId +  ": " + income;
+                    totalIncomeList.add(finalString);
                 }
             } catch (SQLException throwables) {
                 // TODO: Make own throwable exception and let it bubble upwards
@@ -276,22 +267,20 @@ public class MemberMapper {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return nisseFisse;
+        return totalIncomeList;
     }
     public List<String> avgIncomeForEachTeam(){
-        List<String> nisseFisse = new ArrayList<>();
-        int hash = 0;
-        String empty = "";
+        List<String> avgIncomeEachTeamList = new ArrayList<>();
         String sql = "select team_id, avg(price) AS avg_price from maxijoin group by team_id;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
                 while (rs.next()) {
-                    String fisseNisse = "";
-                    empty = rs.getString("team_id");
-                    hash = rs.getInt("avg_price");
-                    fisseNisse = empty +  ": " + hash;
-                    nisseFisse.add(fisseNisse);
+                    String finalString = "";
+                    String teamId = rs.getString("team_id");
+                    int avgPrice = rs.getInt("avg_price");
+                    finalString = teamId +  ": " + avgPrice;
+                    avgIncomeEachTeamList.add(finalString);
                 }
             } catch (SQLException throwables) {
                 // TODO: Make own throwable exception and let it bubble upwards
@@ -300,6 +289,6 @@ public class MemberMapper {
         } catch (SQLException throwables) {
             throwables.printStackTrace();
         }
-        return nisseFisse;
+        return avgIncomeEachTeamList;
     }
 }

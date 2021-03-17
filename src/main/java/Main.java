@@ -7,7 +7,7 @@ import java.util.List;
 public class Main {
 
     private final static String USER = "root";
-    private final static String PASSWORD = "mafhias1234124!";
+    private final static String PASSWORD = "Vinter2020";
     private final static String URL = "jdbc:mysql://localhost:3306/sportsclub?serverTimezone=CET&useSSL=false";
 
     public static void main(String[] args) {
