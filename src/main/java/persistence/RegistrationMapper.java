@@ -25,7 +25,7 @@ public class RegistrationMapper {
         int defualtPrice = 100;
         Registration registration;
 
-        String sql = "INSERT INTO `sportsclub_test`.`registration` (`member_id`, `team_id`, `price`) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO `sportsclub`.`registration` (`member_id`, `team_id`, `price`) VALUES (?, ?, ?);";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1,memberId);
