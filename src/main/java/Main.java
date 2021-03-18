@@ -62,7 +62,7 @@ public class Main {
     }
 
     private static Registration insertMemberToTeam(RegistrationMapper registrationMapper) throws DatabaseException, SQLException {
-        Registration r1 = new Registration(2,"yo01",100);
+        Registration r1 = new Registration(2,"fo01",100);
         Registration r2 = registrationMapper.addToTeam(r1.getMemberId(),r1.getTeamId());
         return r2;
     }

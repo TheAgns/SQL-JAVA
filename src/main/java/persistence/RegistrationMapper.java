@@ -56,7 +56,7 @@ public class RegistrationMapper {
     public List<Registration> getAllRegistrations() throws DatabaseException {
 
 
-        String sql = "SELECT * FROM sportsclub_test.registration;";
+        String sql = "SELECT * FROM sportsclub.registration;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
