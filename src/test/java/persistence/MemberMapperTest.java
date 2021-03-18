@@ -20,13 +20,16 @@ import static org.junit.jupiter.api.Assertions.*;
 //@Disabled
 class MemberMapperTest {
 
-    private final static String USER = "dev";
-    private final static String PASSWORD = "ax2";
+    private final static String USER = "root";
+    private final static String PASSWORD = "Vinter2020";
     private final static String URL = "jdbc:mysql://localhost:3306/sportsclub_test?serverTimezone=CET&useSSL=false";
 
     private static Database db;
     private static MemberMapper memberMapper;
 
+    /*
+    Inden testene bliver udført, bliver denne BeforeAll altid udført først. Og den bliver kun udført 1 gang.
+     */
     @BeforeAll
     public static void setUpClass() {
         try {
@@ -37,6 +40,9 @@ class MemberMapperTest {
         }
     }
 
+    /*
+    Bliver kørt hver gang før hver metode.
+     */
     @BeforeEach
     void setUp() {
         try (Connection testConnection = db.connect()) {
@@ -64,11 +70,21 @@ class MemberMapperTest {
         }
     }
 
+    /*
+    Sørger for Connection bliver etableret. Og hvis ikke vil Connection være null.
+     */
     @Test
-    void testConnection() throws SQLException {
+    void testConnection() throws SQLException, ClassNotFoundException {
             assertNotNull(db.connect());
+            //forkert brugernavn/password/url
+           /* db = new Database("muystjaidfj","heheh","heheh URL!!");
+            assertNotNull(db.connect()); */
     }
 
+    /*
+    Inden hver test bliver udført bliver der addet 3 members til member tabellen. Disse members er tilsvarende
+    de members vi tester for i denne test.
+     */
     @Test
     void getAllMembers() throws DatabaseException {
         List<Member> members = memberMapper.getAllMembers();
@@ -78,9 +94,25 @@ class MemberMapperTest {
         assertEquals(members.get(2), new Member(3, "Peter Lundin","Ahlegårdsvejen 7",3700,"Rønne","m",2002));
     }
 
+/*
+Ser om getMemberById faktisk tager fat i det rigtige id
+ */
     @Test
     void getMemberById() throws DatabaseException {
         assertEquals(new Member(3, "Peter Lundin","Ahlegårdsvejen 7",3700,"Rønne","m",2002), memberMapper.getMemberById(3));
+    }
+
+    //Tester om den håndtere et memberId der ikke eksistere rigtigt.
+    @Test()
+    void getMemberByIdIfItDosentExit() throws DatabaseException {
+      /*  try {
+            memberMapper.getMemberById(5);
+            memberMapper.getMemberById(7);
+            fail("fail på getMemberByIdIfItDosentExit");
+        } catch (DatabaseException e){
+
+        }*/
+        assertThrows(DatabaseException.class, () -> memberMapper.getMemberById(7));
     }
 
     @Test
@@ -90,11 +122,22 @@ class MemberMapperTest {
     }
 
     @Test
+    void deleteMemberThatDontExist() throws DatabaseException {
+        assertThrows(DatabaseException.class,() -> memberMapper.deleteMember(123));
+    }
+
+    @Test
     void insertMember() throws DatabaseException, IllegalInputException {
         Member m1 = memberMapper.insertMember(new Member("Jon Snow","Wintherfell 3", 3760, "Gudhjem", "m", 1992));
         assertNotNull(m1);
         assertEquals(4, memberMapper.getAllMembers().size());
         assertEquals(m1.getMemberId(), memberMapper.getMemberById(m1.getMemberId()).getMemberId());
+    }
+
+    @Test
+    void insertMemberWithWrongData() throws DatabaseException, IllegalInputException {
+        //Member m1 = memberMapper.insertMember(new Member("Jon Snow","Wintherfell 3", 3760, "Gudhjem", "c", 1992));
+        assertThrows(IllegalInputException.class,() -> memberMapper.insertMember(new Member("Jon Snow","Wintherfell 3", 3760, "Gudhjem", "c", 1992)));
     }
 
     @Test
