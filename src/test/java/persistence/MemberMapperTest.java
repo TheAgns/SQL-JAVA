@@ -52,6 +52,7 @@ class MemberMapperTest {
                                 "(3700,'Rønne'),(3730,'Nexø'),(3740,'Svanneke')" +
                                 ",(3760,'Gudhjem'),(3770,'Allinge'),(3782,'Klemmensker')");
                 stmt.execute("ALTER TABLE `member` DISABLE KEYS");
+                stmt.execute("ALTER TABLE `member` AUTO_INCREMENT = 1");//auto_increment bliver nu nulstillet efter hver test
                 stmt.execute(   "INSERT INTO `member` VALUES " +
                                 "(1,'Hans Sørensen','2, Agernvej 3',3700,'m','2000')," +
                                 "(2, 'Jens Kofoed','Agrevej 5',3700,'m','2001')," +
