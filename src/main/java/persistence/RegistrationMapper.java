@@ -12,7 +12,7 @@ import java.util.List;
 public class RegistrationMapper {
     //INSERT INTO `sportsclub`.`registration` (`member_id`, `team_id`, `price`) VALUES ('50', 'fo01', '122');
     private Database database;
-    List<Registration> registrations = new ArrayList<>();
+    private List<Registration> registrations = new ArrayList<>();
 
 
     public RegistrationMapper(Database database) {
@@ -25,7 +25,7 @@ public class RegistrationMapper {
         int defualtPrice = 100;
         Registration registration;
 
-        String sql = "INSERT INTO `sportsclub`.`registration` (`member_id`, `team_id`, `price`) VALUES (?, ?, ?);";
+        String sql = "INSERT INTO `sportsclub_test`.`registration` (`member_id`, `team_id`, `price`) VALUES (?, ?, ?);";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ps.setInt(1,memberId);
@@ -34,10 +34,13 @@ public class RegistrationMapper {
                         || teamId.equals("sv02") || teamId.equals("ten01") || teamId.equals("ten02")
                         || teamId.equals("bt01") || teamId.equals("gym01")) {
                     ps.setString(2, teamId);
+                } else {
+                    System.out.println("fejl");
                 }
                 ps.setInt(3,defualtPrice);//TODO: tjek pris og sæt den rigtige pris ind
                 registration = new Registration(memberId,teamId,defualtPrice);
                 registrations.add(registration);
+                ps.executeUpdate();
 
 
             }
@@ -53,7 +56,7 @@ public class RegistrationMapper {
     public List<Registration> getAllRegistrations() throws DatabaseException {
 
 
-        String sql = "SELECT * FROM sportsclub.registration;";
+        String sql = "SELECT * FROM sportsclub_test.registration;";
         try (Connection connection = database.connect()) {
             try (PreparedStatement ps = connection.prepareStatement(sql)) {
                 ResultSet rs = ps.executeQuery();
